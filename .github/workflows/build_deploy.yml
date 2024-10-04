@@ -25,7 +25,7 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: ./HTXApp
+        context: .
         file: HTXApp/Dockerfile
         push: true
         tags: zlightningzap/htx-assignment:latest
