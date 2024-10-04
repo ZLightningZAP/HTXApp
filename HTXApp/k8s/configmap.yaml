@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: htx-assignment-config
+data:
+  message: "Hello HTX. This is my assignment"
+---
