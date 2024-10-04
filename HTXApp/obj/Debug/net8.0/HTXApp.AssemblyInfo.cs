@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("HTXApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a29d58d6f5929dc63d260130e7bf29af03ca018d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+146f9e83981373a99be72e1cb649d77b95da317d")]
 [assembly: System.Reflection.AssemblyProductAttribute("HTXApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("HTXApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
