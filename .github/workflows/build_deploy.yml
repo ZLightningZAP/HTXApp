@@ -1,0 +1,54 @@
+name: Build and Deploy to EKS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: Dockerfile
+        push: true
+        tags: your-dockerhub-username/htx-assignment:latest
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: your-aws-region # e.g. us-west-2
+
+    - name: Install kubectl
+      run: |
+        curl -LO "https://amazon-eks.s3.us-west-2.amazonaws.com/$(curl -s https://amazon-eks.s3.us-west-2.amazonaws.com/1.20.11/launch-templates/eksctl-1.20.11-linux-amd64.tar.gz | grep -oP '\d+\.\d+\.\d+' | head -n 1)/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin
+
+    - name: Update kubeconfig
+      run: |
+        aws eks --region your-aws-region update-kubeconfig --name your-cluster-name # Replace with your cluster name
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f k8s/deployment.yaml
+        kubectl apply -f k8s/service.yaml
+        kubectl apply -f k8s/ingress.yaml
