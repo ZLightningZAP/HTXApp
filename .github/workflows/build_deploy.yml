@@ -52,7 +52,11 @@ jobs:
     - name: Update kubeconfig
       run: |
         aws eks --region ap-southeast-1 update-kubeconfig --name HTXAssignment
-
+        
+    - name: Replace API_KEY placeholder with actual secret
+      run: |
+        sed -i 's/<API_KEY_PLACEHOLDER>/'"${{ secrets.API_KEY }}"'/g' HTXApp/k8s/secrets.yaml
+        
     - name: Deploy to Kubernetes
       run: |
         kubectl apply -f HTXApp/k8s/configmap.yaml || { echo "Failed to apply configmap"; exit 1; }
